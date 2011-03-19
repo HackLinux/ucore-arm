@@ -2,18 +2,26 @@
 
 This is a port of the ucore project to the ARM architecture.
 
-ucore is a teaching operating system used by Tsinghua University.
-Project homepage: [[http://ucore.googlecode.com]].
+'ucore' is a teaching operating system used by Tsinghua University.
+Project homepage: [http://ucore.googlecode.com].
 
 Currently this port runs on the S3C2410X microprocessor, which is developed
 using an ARM920T core.
 
+#source code organization
+
+* 'arch' contains architecture dependent driver and boot code. 
+* 'lib' contains architecture independent library code. 
+* 'kern' contains architecture independent kernel code.
+* 'emu' contains various emulation configurations.
+
 #todo
 
 * Rewrite Makefile, make it DRY and more like original ucore Makefile.
-* Implement basic kernel in lab1.
+* Make clock interrupts to work.
+* Find a way to do division on ARM.
 
-#ackownledgement
+#acknowledgment
 
-* Boot code is inspired by david leels <davidontech@gmail.com>
-
+* Most code is borrowed from the ucore project, of course.
+* Boot code is inspired by david leels <davidontech@gmail.com>.
