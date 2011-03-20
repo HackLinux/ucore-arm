@@ -23,5 +23,6 @@ using an ARM920T core.
 
 #acknowledgment
 
-* Most code is borrowed from the ucore project, of course.
+* Most code is taken from the ucore project, of course.
 * Boot code is inspired by david leels <davidontech@gmail.com>.
+* div64 code for arm is taken from the linux kernel.

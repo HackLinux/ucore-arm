@@ -11,7 +11,7 @@ HOSTCFLAGS	:= -g -Wall -O2
 
 # for compiling to target arch
 CC			:= $(TARGET_PREFIX)gcc
-CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver
+CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver -I $(ARCH_DIR)
 CTYPE		:= c S
 
 LD			:= $(TARGET_PREFIX)ld
@@ -44,15 +44,20 @@ obj/boot/boot.o: $(ARCH_DIR)/boot/bootmain.c $(ARCH_DIR)/boot/init.s
 .PHONY: kernel
 kernel: bin/kernel
 
-KERN_OBJS := obj/kern/init/init.o
-LIB_OBJS := obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
-ARCH_DRIVER_OBJS := obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o
+KERN_OBJS 	:= obj/kern/init/init.o
+LIB_OBJS	:= obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
+ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o
+ASM_OBJS	:= obj/$(ARCH_DIR)/div64.o
 
-$(KERN_OBJS) $(LIB_OBJS) $(ARCH_DRIVER_OBJS):obj/%.o:%.c
+$(ASM_OBJS):obj/%.o:%.S
 	@$(MKDIR) `$(DIRNAME) $@`
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-bin/kernel: $(KERN_OBJS) $(LIB_OBJS) $(ARCH_DRIVER_OBJS)
+$(KERN_OBJS) $(LIB_OBJS) $(ARCH_OBJS):obj/%.o:%.c
+	@$(MKDIR) `$(DIRNAME) $@`
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+bin/kernel: $(KERN_OBJS) $(LIB_OBJS) $(ARCH_OBJS) $(ASM_OBJS)
 	@$(MKDIR) `$(DIRNAME) $@`
 	$(LD) $(LDFALGS) -T $(ARCH_DIR)/kernel.lds -o $@ $^
 
