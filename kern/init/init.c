@@ -1,10 +1,24 @@
-#include <kern/driver/console.h>
-#include <lib/stdio.h>
+#include <console.h>
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
 
-void
+int kern_init(void) __attribute__((noreturn));
+
+int
 kern_init(void) {
+    // clear bss
+    extern char edata[], end[];
+    memset(edata, 0, end - edata);
+
+    // init console
     cons_init();
-    cprintf("%d\n", 12345678);
-    cprintf("Hello World!\n");
+
+    // init message
+    cprintf("(THU.CST) ucore is loading...\n\n");
+
+    panic("nothing to do!");
+
+    // do nothing
     while(1);
 }

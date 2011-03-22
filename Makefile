@@ -11,7 +11,7 @@ HOSTCFLAGS	:= -g -Wall -O2
 
 # for compiling to target arch
 CC			:= $(TARGET_PREFIX)gcc
-CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver -I $(ARCH_DIR)
+CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver -I ./kern/debug -I ./kern/trap -I $(ARCH_DIR)
 CTYPE		:= c S
 
 LD			:= $(TARGET_PREFIX)ld
@@ -45,7 +45,7 @@ obj/boot/boot.o: $(ARCH_DIR)/boot/bootmain.c $(ARCH_DIR)/boot/init.s
 .PHONY: kernel
 kernel: bin/kernel
 
-KERN_OBJS 	:= obj/kern/init/init.o
+KERN_OBJS 	:= obj/kern/init/init.o obj/kern/debug/panic.o
 LIB_OBJS	:= obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
 ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o
 ASM_OBJS	:= obj/$(ARCH_DIR)/init.o obj/$(ARCH_DIR)/div64.o
