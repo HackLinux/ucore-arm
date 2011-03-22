@@ -7,7 +7,7 @@
 #define INTIAL_LOAD_ADDRESS 0x30000000
 #define ELFHDR ((struct elfhdr *)(INTIAL_LOAD_ADDRESS + 0x10000))
 
-static const char *loading="Loading kernel...\n";
+static const char *loading="ucore bootloader\n";
 static const char *calling="Calling into kernel...\n";
 static const char *bad="Bad Kernel, cannot be loaded.\n";
 static const char *finished="No!!!You cannot come here!!!\n";
