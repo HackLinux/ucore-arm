@@ -1,0 +1,7 @@
+file bin/kernel
+define hook-stop
+x/5i $pc
+end
+target remote :12345
+b kern_init
+c

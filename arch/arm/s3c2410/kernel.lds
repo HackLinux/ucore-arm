@@ -1,5 +1,5 @@
 OUTPUT_ARCH(arm)
-ENTRY(kern_init)
+ENTRY(_kern_init)
 
 SECTIONS {
     /* Load the kernel at this address: "." means the current address */

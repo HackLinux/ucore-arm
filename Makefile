@@ -19,6 +19,7 @@ LDFALGS		:=
 
 OBJCOPY		:= $(TARGET_PREFIX)objcopy
 OBJDUMP		:= $(TARGET_PREFIX)objdump
+GDB			:= $(TARGET_PREFIX)gdb
 
 COPY		:= cp
 MKDIR		:= mkdir -p
@@ -47,7 +48,7 @@ kernel: bin/kernel
 KERN_OBJS 	:= obj/kern/init/init.o
 LIB_OBJS	:= obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
 ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o
-ASM_OBJS	:= obj/$(ARCH_DIR)/div64.o
+ASM_OBJS	:= obj/$(ARCH_DIR)/init.o obj/$(ARCH_DIR)/div64.o
 
 $(ASM_OBJS):obj/%.o:%.S
 	@$(MKDIR) `$(DIRNAME) $@`
@@ -71,7 +72,15 @@ bin/ucore.img: bin/boot.bin bin/kernel
 
 .PHONY: skyeye
 skyeye: image
+	@cd emu && skyeye -n
+
+.PHONY: debug
+debug: image
 	@cd emu && skyeye
+
+.PHONY: gdb
+gdb: 
+	$(GDB) -q -x tool/gdbinit
 
 .PHONY: clean
 clean:
