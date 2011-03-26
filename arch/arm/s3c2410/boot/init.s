@@ -3,6 +3,9 @@
 .align 0
 
 .global _start
+.global __intr_vector_start
+.global __intr_vector_end
+
 .extern bootmain
 .extern __bss_start__
 .extern __bss_end__
@@ -22,6 +25,8 @@ _start:
 
 .align 4
 
+__intr_vector_start:
+
 _vector_reset:	.word	__vector_reset
 _vector_undefined:	.word	__vector_undefined
 _vector_swi:	.word	__vector_swi
@@ -30,6 +35,8 @@ _vector_data_abort:	.word	__vector_data_abort
 _vector_reserved:	.word	__vector_reserved
 _vector_irq:	.word	__vector_irq
 _vector_fiq:	.word	__vector_fiq 
+
+__intr_vector_end:
 
 # reset
 .equ DISABLE_IRQ,		0x80

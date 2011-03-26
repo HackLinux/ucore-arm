@@ -15,14 +15,21 @@ using an ARM920T core.
 * 'kern' contains architecture independent kernel code.
 * 'tool' contains various tools such as GDB scripts and emulator configurations.
 
+#current status
+
+* Simple bootloader works, which can load elf kernel from memory.
+* Output to UART works. cprintf works.
+* Interrupt(IRQ) works.
+
 #todo
 
+* Implement memory management system.
+* Implement syscall.
+* Input from UART.
 * Rewrite Makefile, make it DRY and more like original ucore Makefile.
-* Make clock interrupts to work.
-* Find a way to do division on ARM.
 
 #acknowledgment
 
 * Most code is taken from the ucore project, of course.
-* Boot code is inspired by david leels <davidontech@gmail.com>.
+* Boot and interrupt code is inspired by david leels <davidontech@gmail.com>.
 * div64 code for arm is taken from the Linux kernel.

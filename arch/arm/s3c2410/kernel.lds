@@ -2,6 +2,13 @@ OUTPUT_ARCH(arm)
 ENTRY(_kern_init)
 
 SECTIONS {
+    . = 0x0;
+
+    /* interrupt */
+    .interrupt : {
+        *(.interrupt)
+    }
+
     /* Load the kernel at this address: "." means the current address */
     . = 0x31000000;
 

@@ -1,6 +1,8 @@
-#include <console.h>
-#include <stdio.h>
 #include <assert.h>
+#include <clock.h>
+#include <console.h>
+#include <intr.h>
+#include <stdio.h>
 #include <string.h>
 
 int kern_init(void) __attribute__((noreturn));
@@ -14,10 +16,17 @@ kern_init(void) {
     // init console
     cons_init();
 
-    // init message
-    cprintf("(THU.CST) ucore is loading...\n\n");
+    // init interrupts
+    intr_init();
 
-    panic("nothing to do!");
+    // init timer
+    clock_init();
+
+    // init interrupts
+    intr_enable();
+
+    // init message
+    cprintf("\n(THU.CST) ucore(arm)\n");
 
     // do nothing
     while(1);

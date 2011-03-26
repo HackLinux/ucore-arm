@@ -47,8 +47,8 @@ kernel: bin/kernel
 
 KERN_OBJS 	:= obj/kern/init/init.o obj/kern/debug/panic.o
 LIB_OBJS	:= obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
-ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o
-ASM_OBJS	:= obj/$(ARCH_DIR)/init.o obj/$(ARCH_DIR)/div64.o
+ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o obj/$(ARCH_DIR)/intr.o
+ASM_OBJS	:= obj/$(ARCH_DIR)/init.o obj/$(ARCH_DIR)/div64.o obj/$(ARCH_DIR)/intr_vector.o
 
 $(ASM_OBJS):obj/%.o:%.S
 	@$(MKDIR) `$(DIRNAME) $@`
