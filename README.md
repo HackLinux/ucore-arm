@@ -13,7 +13,7 @@ using an ARM920T core.
 * 'arch' contains architecture dependent driver and boot code. 
 * 'lib' contains architecture independent library code. 
 * 'kern' contains architecture independent kernel code.
-* 'emu' contains various emulation configurations.
+* 'tool' contains various tools such as GDB scripts and emulator configurations.
 
 #todo
 
@@ -25,4 +25,4 @@ using an ARM920T core.
 
 * Most code is taken from the ucore project, of course.
 * Boot code is inspired by david leels <davidontech@gmail.com>.
-* div64 code for arm is taken from the linux kernel.
+* div64 code for arm is taken from the Linux kernel.

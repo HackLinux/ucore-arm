@@ -72,11 +72,11 @@ bin/ucore.img: bin/boot.bin bin/kernel
 
 .PHONY: skyeye
 skyeye: image
-	@cd emu && skyeye -n
+	@cd tool/emu && skyeye -n
 
 .PHONY: debug
 debug: image
-	@cd emu && skyeye
+	@cd tool/emu && skyeye
 
 .PHONY: gdb
 gdb: 
