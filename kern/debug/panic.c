@@ -1,6 +1,5 @@
 #include <types.h>
 #include <stdio.h>
-#include <monitor.h>
 
 static bool is_panic = 0;
 
@@ -25,11 +24,13 @@ __panic(const char *file, int line, const char *fmt, ...) {
 
 panic_dead:
     while (1) {
+        // Should go into a kernel debugger (monitor).
+        // Currently we don't have it on ARM.
         // monitor(NULL);
     }
 }
 
-/* __warn - like panic, but don't */
+/* __warn - output a kernel warning */
 void
 __warn(const char *file, int line, const char *fmt, ...) {
     va_list ap;
