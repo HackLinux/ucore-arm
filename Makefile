@@ -3,7 +3,8 @@ SKYEYE 		:= skyeye
 TARGET_ARCH := arm
 TARGET_MACH := s3c2410
 TARGET_PREFIX	:= arm-elf-
-ARCH_DIR	:= arch/$(TARGET_ARCH)/$(TARGET_MACH)
+ARCH_DIR	:= arch/$(TARGET_ARCH)
+MACH_DIR	:= arch/$(TARGET_ARCH)/$(TARGET_MACH)
 
 # for compiling tools to compile this package
 HOSTCC		:= gcc
@@ -11,7 +12,7 @@ HOSTCFLAGS	:= -g -Wall -O2
 
 # for compiling to target arch
 CC			:= $(TARGET_PREFIX)gcc
-CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver -I ./kern/debug -I ./kern/trap -I $(ARCH_DIR)
+CFLAGS		:= -fno-builtin -Wall -ggdb -nostdinc -nostdlib -I . -I ./lib -I ./kern/driver -I ./kern/debug -I ./kern/trap -I $(ARCH_DIR) -I $(MACH_DIR)
 CTYPE		:= c S
 
 LD			:= $(TARGET_PREFIX)ld
@@ -36,19 +37,28 @@ bin/boot.bin: obj/boot/boot.o
 	@$(MKDIR) `$(DIRNAME) $@`
 	$(OBJCOPY) -O binary $< $@
 
-obj/boot/boot.o: $(ARCH_DIR)/boot/bootmain.c $(ARCH_DIR)/boot/init.s
+obj/boot/boot.o: $(MACH_DIR)/boot/bootmain.c $(MACH_DIR)/boot/init.s
 	@$(MKDIR) `$(DIRNAME) $@`
-	$(CC) $(CFLAGS) -c -oobj/boot/bootmain.o $(ARCH_DIR)/boot/bootmain.c
-	$(CC) $(CFLAGS) -c -oobj/boot/init.o $(ARCH_DIR)/boot/init.s
-	$(CC) $(CFLAGS) $(LDFALGS) -T$(ARCH_DIR)/boot/boot.lds -o $@ obj/boot/bootmain.o obj/boot/init.o
+	$(CC) $(CFLAGS) -c -oobj/boot/bootmain.o $(MACH_DIR)/boot/bootmain.c
+	$(CC) $(CFLAGS) -c -oobj/boot/init.o $(MACH_DIR)/boot/init.s
+	$(CC) $(CFLAGS) $(LDFALGS) -T$(MACH_DIR)/boot/boot.lds -o $@ obj/boot/bootmain.o obj/boot/init.o
 
 .PHONY: kernel
 kernel: bin/kernel
 
-KERN_OBJS 	:= obj/kern/init/init.o obj/kern/debug/panic.o
-LIB_OBJS	:= obj/lib/printfmt.o obj/lib/string.o obj/lib/readline.o obj/lib/stdio.o
-ARCH_OBJS 	:= obj/$(ARCH_DIR)/clock.o obj/$(ARCH_DIR)/console.o obj/$(ARCH_DIR)/arch.o obj/$(ARCH_DIR)/intr.o
-ASM_OBJS	:= obj/$(ARCH_DIR)/init.o obj/$(ARCH_DIR)/div64.o obj/$(ARCH_DIR)/intr_vector.o
+KERN_OBJS 	:= 	obj/kern/init/init.o \
+				obj/kern/debug/panic.o
+LIB_OBJS	:=  obj/lib/printfmt.o \
+				obj/lib/string.o \
+				obj/lib/readline.o \
+				obj/lib/stdio.o
+ARCH_OBJS 	:=  obj/$(MACH_DIR)/clock.o \
+				obj/$(MACH_DIR)/console.o \
+				obj/$(MACH_DIR)/arch.o \
+				obj/$(MACH_DIR)/intr.o
+ASM_OBJS	:=  obj/$(MACH_DIR)/init.o \
+				obj/$(ARCH_DIR)/div64.o \
+				obj/$(MACH_DIR)/intr_vector.o
 
 $(ASM_OBJS):obj/%.o:%.S
 	@$(MKDIR) `$(DIRNAME) $@`
@@ -60,7 +70,7 @@ $(KERN_OBJS) $(LIB_OBJS) $(ARCH_OBJS):obj/%.o:%.c
 
 bin/kernel: $(KERN_OBJS) $(LIB_OBJS) $(ARCH_OBJS) $(ASM_OBJS)
 	@$(MKDIR) `$(DIRNAME) $@`
-	$(LD) $(LDFALGS) -T $(ARCH_DIR)/kernel.lds -o $@ $^
+	$(LD) $(LDFALGS) -T $(MACH_DIR)/kernel.lds -o $@ $^
 
 .PHONY: image
 image: bin/ucore.img
