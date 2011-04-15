@@ -233,11 +233,13 @@ pmm_init(void) {
     boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, KERN_PHYSICAL_MEM_BASE, PTE_RW);
     // IO
     boot_map_segment(boot_pgdir, 0x48000000, 0x18000000, 0x48000000, PTE_RW);
+    // intr
+    boot_map_segment(boot_pgdir, 0x0, PGSIZE, 0, PTE_RW);
 
     enable_paging();
     cprintf("paging enabled.\n");
 
-    slab_init();
+    // slab_init();
 
     cprintf("DONE!=====================\n"); return;
 }
