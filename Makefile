@@ -49,11 +49,14 @@ kernel: bin/kernel
 KERN_OBJS 	:= 	obj/kern/init/init.o \
 				obj/kern/debug/panic.o \
 				obj/kern/mm/pmm.o \
-				obj/kern/mm/buddy_pmm.o
+				obj/kern/mm/buddy_pmm.o \
+				obj/kern/mm/slab.o
 LIB_OBJS	:=  obj/lib/printfmt.o \
 				obj/lib/string.o \
 				obj/lib/readline.o \
-				obj/lib/stdio.o
+				obj/lib/stdio.o \
+				obj/lib/rb_tree.o \
+				obj/lib/rand.o
 ARCH_OBJS 	:=  obj/$(MACH_DIR)/clock.o \
 				obj/$(MACH_DIR)/console.o \
 				obj/$(MACH_DIR)/arch.o \

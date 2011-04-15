@@ -74,8 +74,15 @@ struct Page {
 /* Flags describing the status of a page frame */
 #define PG_reserved                 0       // the page descriptor is reserved for kernel or unusable
 #define PG_property                 1       // the page descriptor is reserved for kernel or unusable
+#define PG_slab                     2       // page frame is included in a slab
 
 // XXX Temp solution
+#define SetPageSlab(page)       ((page)->flags |= 4)
+#define ClearPageSlab(page)     ((page)->flags &= ~(unsigned long)4)
+#define PageSlab(page)          ((page)->flags & 4)
+// #define SetPageSlab(page)           set_bit(PG_slab, &((page)->flags))
+// #define ClearPageSlab(page)         clear_bit(PG_slab, &((page)->flags))
+// #define PageSlab(page)              test_bit(PG_slab, &((page)->flags))
 #define SetPageProperty(page)       ((page)->flags |= 2)
 #define ClearPageProperty(page)     ((page)->flags &= ~(unsigned long)2)
 #define PageProperty(page)          ((page)->flags & 2)

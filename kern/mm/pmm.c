@@ -7,6 +7,7 @@
 #include <error.h>
 #include <memmap.h>
 #include <mmu.h>
+#include <slab.h>
 
 // virtual address of physicall page array
 struct Page *pages;
@@ -234,6 +235,9 @@ pmm_init(void) {
     boot_map_segment(boot_pgdir, 0x48000000, 0x18000000, 0x48000000, PTE_RW);
 
     enable_paging();
+    cprintf("paging enabled.\n");
+
+    slab_init();
 
     cprintf("DONE!=====================\n"); return;
 }
