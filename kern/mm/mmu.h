@@ -1,12 +1,13 @@
 #ifndef __KERN_MM_MMU_H__
 #define __KERN_MM_MMU_H__
 #include <types.h>
+#include <arch_mmu.h>
 
 // A linear address 'la' has a three-part structure as follows:
 //
-// +--------10------+-------10-------+---------12----------+
-// | Page Directory |   Page Table   | Offset within Page  |
-// |      Index     |     Index      |                     |
+// +--------12--------+-----10-------+-+-------12----------+
+// | Page Directory   | Page Table   | Offset within Page  |
+// |      Index       |   Index      |                     |
 // +----------------+----------------+---------------------+
 //  \--- PDX(la) --/ \--- PTX(la) --/ \---- PGOFF(la) ----/
 //  \----------- PPN(la) -----------/
@@ -16,10 +17,12 @@
 // use PGADDR(PDX(la), PTX(la), PGOFF(la)).
 
 // page directory index
-#define PDX(la) ((((uintptr_t)(la)) >> PDXSHIFT) & 0x3FF)
+// XXX #define PDX(la) ((((uintptr_t)(la)) >> PDXSHIFT) & 0x3FF)
+#define PDX(la) ((((uintptr_t)(la)) >> 20) & 0xFFF)
 
 // page table index
-#define PTX(la) ((((uintptr_t)(la)) >> PTXSHIFT) & 0x3FF)
+// XXX #define PTX(la) ((((uintptr_t)(la)) >> PTXSHIFT) & 0x3FF)
+#define PTX(la) ((((uintptr_t)(la)) >> 10) & 0x3FF)
 
 // page number field of address
 #define PPN(la) (((uintptr_t)(la)) >> PTXSHIFT)
@@ -46,21 +49,7 @@
 #define PTXSHIFT        12                      // offset of PTX in a linear address
 #define PDXSHIFT        22                      // offset of PDX in a linear address
 
-/* page table/directory entry flags */
-#define PTE_P           0x001                   // Present
-#define PTE_W           0x002                   // Writeable
-#define PTE_U           0x004                   // User
-#define PTE_PWT         0x008                   // Write-Through
-#define PTE_PCD         0x010                   // Cache-Disable
-#define PTE_A           0x020                   // Accessed
-#define PTE_D           0x040                   // Dirty
-#define PTE_PS          0x080                   // Page Size
-#define PTE_MBZ         0x180                   // Bits must be zero
-#define PTE_AVAIL       0xE00                   // Available for software use
-                                                // The PTE_AVAIL bits aren't used by the kernel or interpreted by the
-                                                // hardware, so user processes are allowed to set them arbitrarily.
-
-#define PTE_USER        (PTE_U | PTE_W | PTE_P)
+void arch_enable_paging(uintptr_t pgdir);
 
 #endif /* !__KERN_MM_MMU_H__ */
 

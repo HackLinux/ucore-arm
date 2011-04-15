@@ -62,7 +62,7 @@ void print_pgdir(void);
  * address. It panics if you pass an invalid physical address.
  * */
 #define KADDR(pa) ({                                                    \
-            uintptr_t __m_pa = (pa - KERN_PHYSICAL_MEM_BASE);           \ 
+            uintptr_t __m_pa = (pa - KERN_PHYSICAL_MEM_BASE);           \
             size_t __m_ppn = PPN(__m_pa);                               \
             if (__m_ppn >= npage) {                                     \
                 panic("KADDR called with invalid pa %08lx", __m_pa);    \

@@ -33,7 +33,8 @@
 /* All physical memory mapped at this address */
 /* TODO change this back to 0xC0000000 */
 #define KERNBASE            0x30000000
-#define KMEMSIZE            0x38000000                  // the maximum amount of physical memory
+// XXX restore this
+#define KMEMSIZE            0x08000000                  // the maximum amount of physical memory
 #define KERNTOP             (KERNBASE + KMEMSIZE)
 
 /* *
@@ -65,15 +66,24 @@ typedef uintptr_t pde_t;
 struct Page {
     atomic_t ref;                   // page frame's reference counter
     uint32_t flags;                 // array of flags that describe the status of the page frame
+    unsigned int property;          // used in buddy system, stores the order (the X in 2^X) of the continuous memory block
+    int zone_num;                   // used in buddy system, the No. of zone which the page belongs to
     list_entry_t page_link;         // free list link
 };
 
 /* Flags describing the status of a page frame */
 #define PG_reserved                 0       // the page descriptor is reserved for kernel or unusable
+#define PG_property                 1       // the page descriptor is reserved for kernel or unusable
 
 // XXX Temp solution
+#define SetPageProperty(page)       ((page)->flags |= 2)
+#define ClearPageProperty(page)     ((page)->flags &= ~(unsigned long)2)
+#define PageProperty(page)          ((page)->flags & 2)
+// #define SetPageProperty(page)       set_bit(PG_property, &((page)->flags))
+// #define ClearPageProperty(page)     clear_bit(PG_property, &((page)->flags))
+// #define PageProperty(page)          test_bit(PG_property, &((page)->flags))
 #define SetPageReserved(page)       ((page)->flags |= 1)
-#define ClearPageReserved(page)     ((page)->flags &= ~(unsigned long))
+#define ClearPageReserved(page)     ((page)->flags &= ~(unsigned long)1)
 #define PageReserved(page)          ((page)->flags & 1)
 // #define SetPageReserved(page)       set_bit(PG_reserved, &((page)->flags))
 // #define ClearPageReserved(page)     clear_bit(PG_reserved, &((page)->flags))

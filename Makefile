@@ -49,7 +49,7 @@ kernel: bin/kernel
 KERN_OBJS 	:= 	obj/kern/init/init.o \
 				obj/kern/debug/panic.o \
 				obj/kern/mm/pmm.o \
-				obj/kern/mm/default_pmm.o
+				obj/kern/mm/buddy_pmm.o
 LIB_OBJS	:=  obj/lib/printfmt.o \
 				obj/lib/string.o \
 				obj/lib/readline.o \
@@ -59,6 +59,7 @@ ARCH_OBJS 	:=  obj/$(MACH_DIR)/clock.o \
 				obj/$(MACH_DIR)/arch.o \
 				obj/$(MACH_DIR)/intr.o \
 				obj/$(MACH_DIR)/memmap.o \
+				obj/$(MACH_DIR)/mmu.o \
 				obj/$(ARCH_DIR)/lib/div0.o
 ASM_OBJS	:=  obj/$(MACH_DIR)/init.o \
 				obj/$(ARCH_DIR)/div64.o \
