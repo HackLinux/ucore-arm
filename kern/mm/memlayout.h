@@ -1,6 +1,8 @@
 #ifndef __KERN_MM_MEMLAYOUT_H__
 #define __KERN_MM_MEMLAYOUT_H__
 
+#include <bitops.h>
+
 /* This file contains the definitions for memory management in our OS. */
 
 /* *
@@ -76,25 +78,15 @@ struct Page {
 #define PG_property                 1       // the page descriptor is reserved for kernel or unusable
 #define PG_slab                     2       // page frame is included in a slab
 
-// XXX Temp solution
-#define SetPageSlab(page)       ((page)->flags |= 4)
-#define ClearPageSlab(page)     ((page)->flags &= ~(unsigned long)4)
-#define PageSlab(page)          ((page)->flags & 4)
-// #define SetPageSlab(page)           set_bit(PG_slab, &((page)->flags))
-// #define ClearPageSlab(page)         clear_bit(PG_slab, &((page)->flags))
-// #define PageSlab(page)              test_bit(PG_slab, &((page)->flags))
-#define SetPageProperty(page)       ((page)->flags |= 2)
-#define ClearPageProperty(page)     ((page)->flags &= ~(unsigned long)2)
-#define PageProperty(page)          ((page)->flags & 2)
-// #define SetPageProperty(page)       set_bit(PG_property, &((page)->flags))
-// #define ClearPageProperty(page)     clear_bit(PG_property, &((page)->flags))
-// #define PageProperty(page)          test_bit(PG_property, &((page)->flags))
-#define SetPageReserved(page)       ((page)->flags |= 1)
-#define ClearPageReserved(page)     ((page)->flags &= ~(unsigned long)1)
-#define PageReserved(page)          ((page)->flags & 1)
-// #define SetPageReserved(page)       set_bit(PG_reserved, &((page)->flags))
-// #define ClearPageReserved(page)     clear_bit(PG_reserved, &((page)->flags))
-// #define PageReserved(page)          test_bit(PG_reserved, &((page)->flags))
+#define SetPageSlab(page)           set_bit(PG_slab, &((page)->flags))
+#define ClearPageSlab(page)         clear_bit(PG_slab, &((page)->flags))
+#define PageSlab(page)              test_bit(PG_slab, &((page)->flags))
+#define SetPageProperty(page)       set_bit(PG_property, &((page)->flags))
+#define ClearPageProperty(page)     clear_bit(PG_property, &((page)->flags))
+#define PageProperty(page)          test_bit(PG_property, &((page)->flags))
+#define SetPageReserved(page)       set_bit(PG_reserved, &((page)->flags))
+#define ClearPageReserved(page)     clear_bit(PG_reserved, &((page)->flags))
+#define PageReserved(page)          test_bit(PG_reserved, &((page)->flags))
 
 // convert list entry to page
 #define le2page(le, member)                 \
