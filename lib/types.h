@@ -25,6 +25,8 @@ typedef unsigned long long uint64_t;
 typedef long intptr_t;
 typedef unsigned long uintptr_t;
 
+#define BITS_PER_LONG sizeof(long)
+
 /* size_t is used for memory object sizes */
 typedef uintptr_t size_t;
 
