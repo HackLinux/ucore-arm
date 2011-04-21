@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <atomic.h>
+#include <pmm.h>
 
 int kern_init(void) __attribute__((noreturn));
 
